@@ -1,0 +1,35 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" 
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" width="32" height="32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve">
+
+<radialGradient id="fill_adv" cx="0" cy="-5" r="10" gradientUnits="userSpaceOnUse">
+	<stop  offset="0" style="stop-color:#ffcccc"/>
+	<stop  offset="1" style="stop-color:#ff7777"/>
+</radialGradient>
+<radialGradient id="fill_adj" cx="0" cy="-5" r="10" gradientUnits="userSpaceOnUse">
+	<stop  offset="0" style="stop-color:#ffddbb"/>
+	<stop  offset="1" style="stop-color:#ffbb66"/>
+</radialGradient>
+<radialGradient id="fill_verb" cx="0" cy="-5" r="10" gradientUnits="userSpaceOnUse">
+	<stop  offset="0" style="stop-color:#aaddaa"/>
+	<stop  offset="1" style="stop-color:#22bb22"/>
+</radialGradient>
+<radialGradient id="fill_noun" cx="0" cy="-5" r="10" gradientUnits="userSpaceOnUse">
+	<stop  offset="0" style="stop-color:#ccccff"/>
+	<stop  offset="1" style="stop-color:#7777ff"/>
+</radialGradient>
+
+<defs>
+	<circle id="node_noun" fill="url(#fill_noun)" cx="0" cy="0" r="16"/>
+	<circle id="node_verb" fill="url(#fill_verb)" cx="0" cy="0" r="16"/>
+	<circle id="node_adj" fill="url(#fill_adj)" cx="0" cy="0" r="16"/>
+	<circle id="node_adv" fill="url(#fill_adv)" cx="0" cy="0" r="16"/>
+</defs>
+
+
+<g id="canvas">
+	<use id="node" xlink:href="#node_verb" transform="translate(16,16) scale(1.0)"/>
+</g>
+
+</svg>

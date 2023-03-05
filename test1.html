@@ -1,0 +1,305 @@
+
+
+
+
+<!DOCTYPE HTML>
+<!--
+	Spectral by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title></title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+
+		<script type="text/javascript" src="assets/js/vis.min.js"></script>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet" type="text/css">
+
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+
+        <style>
+					#visuword {
+							position:relative;
+							}
+					#visuword a {
+							position:absolute;
+							right:0; top:0;
+							height:100%; width:0.5em;
+							line-height:2.5em;
+							padding:0 1.8em 0 0.8em;
+							}
+</style>
+	</head>
+<body class="landing is-preload">
+
+		<!-- Page Wrapper -->
+			<div id="page-wrapper">
+
+				<!-- Header -->
+					<h1><a href="/explore">Visual Theasaurus</a></h1>
+						<div id="visuwords_enter">
+						<input type="text" value="" id="visuword" size="10" placeholder="visualize">
+						<button type="button" id="mybutton" class="button special icon fa-random"> </button>
+				
+						</div>
+                        
+						<nav id="nav">
+							<ul>
+								<li class="special">
+									<a href="#menu" class="menuToggle"><span>Menu</span></a>
+									<div id="menu">
+										<ul>
+											<li><a href="{% url 'visual-home' %}">Home</a></li>
+											<li><a href="test1.html">Explore</a></li>
+											<li><a href="{% url 'visual-about' %}">More info</a></li>
+											<li><a href="#">Sign Up</a></li>
+											<li><a href="#">Log In</a></li>
+										</ul>
+									</div>
+								</li>
+							</ul>
+						</nav>
+					</header>
+<div id="mynetwork"><div class="vis-network" tabindex="900" style="position: relative; overflow: hidden; touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); width: 100%; height: 100%;"><canvas width="600" height="400" style="position: relative; touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); width: 100%; height: 100%;"></canvas><div class="vis-manipulation" style="display: none;"></div><div class="vis-edit-mode" style="display: block;"><div class="vis-button vis-edit vis-edit-mode" style="touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"><div class="vis-label">Edit</div></div></div><div class="vis-close" style="display: none;"></div></div></div>
+<pre id="eventSpan"></pre>
+
+<script type="text/javascript">
+document.getElementById("mybutton").onclick = function() {
+var visuword = document.getElementById("visuword");
+    // create an array with nodes
+ myObj = {"mywords": null};
+myObj.mywords=[{"word":"beat","score":7599},
+    {"word":"screw","score":2208},
+    {"word":"cuckold","score":2094},
+    {"word":"shaft","score":1889},
+    {"word":"wander","score":1486},
+    {"word":"tare","score":1376},
+    {"word":"betray","score":1309},
+    {"word":"swindle","score":1090},
+    {"word":"jockey","score":812},
+    {"word":"chess","score":753},
+    {"word":"chicane","score":607},
+    {"word":"sell short","score":589},
+    {"word":"darnel","score":441}
+   ];
+  var nodes = new vis.DataSet([{id: 1, label: 'cheat', title: 'definition'}]);
+ var edges = new vis.DataSet([ ]);
+
+  var j=2;
+for( i in myObj.mywords)
+{
+nodes.add([{id: j, label: myObj.mywords[i].word, title: 'definition'}]);
+
+j++;
+}
+
+var k;
+for(k=2; k<=j;k++)
+{
+edges.add([{from:1, to:k}]);
+}
+
+
+  // create an array with edges
+
+  // create a network
+
+    var container = document.getElementById('mynetwork');
+    var data = {
+        nodes: nodes,
+        edges: edges
+    };
+
+    var options = {
+			interaction:{hover:true},
+			manipulation: {
+				enabled: true
+			}
+		};
+
+    var network = new vis.Network(container, data, options);
+
+    network.on("click", function (params) {
+        params.event = "[original event]";
+	//var dt=network.clustering.findNode(this.getNodeAt(params.pointer.DOM));
+	var kt=nodes.get([this.getNodeAt(params.pointer.DOM)], {fields:['label']});
+	document.getElementById('eventSpan').innerHTML = '<h2>Click event:</h2>' + this.getNodeAt(params.pointer.DOM)+kt[0].label;
+	//console.log('click event, getNodeAt returns: ' + this.getNodeAt(params.pointer.DOM));
+	var url= "https://www.merriam-webster.com/dictionary/" + kt[0].label.toString();
+       window.open(url) ;
+
+
+    });
+
+    network.on("dragStart", function (params) {
+        // There's no point in displaying this event on screen, it gets immediately overwritten
+        params.event = "[original event]";
+        console.log('dragStart Event:', params);
+        console.log('dragStart event, getNodeAt returns: ' + this.getNodeAt(params.pointer.DOM));
+    });
+    network.on("dragging", function (params) {
+        params.event = "[original event]";
+        document.getElementById('eventSpan').innerHTML = '<h2>dragging event:</h2>' + JSON.stringify(params, null, 4);
+    });
+    network.on("dragEnd", function (params) {
+        params.event = "[original event]";
+        document.getElementById('eventSpan').innerHTML = '<h2>dragEnd event:</h2>' + JSON.stringify(params, null, 4);
+        console.log('dragEnd Event:', params);
+        console.log('dragEnd event, getNodeAt returns: ' + this.getNodeAt(params.pointer.DOM));
+    });
+
+
+    network.on("showPopup", function (params) {
+        document.getElementById('eventSpan').innerHTML = '<h2></h2>';
+    });
+    network.on("hidePopup", function () {
+        console.log('hidePopup Event');
+    });
+    network.on("select", function (params) {
+        console.log('select Event:', params);
+    });
+    network.on("selectNode", function (params) {
+        console.log('selectNode Event:', params);
+    });
+    network.on("selectEdge", function (params) {
+        console.log('selectEdge Event:', params);
+    });
+    network.on("deselectNode", function (params) {
+        console.log('deselectNode Event:', params);
+    });
+    network.on("deselectEdge", function (params) {
+        console.log('deselectEdge Event:', params);
+    });
+    network.on("hoverNode", function (params) {
+        console.log('hoverNode Event:', params);
+    });
+    network.on("hoverEdge", function (params) {
+        console.log('hoverEdge Event:', params);
+    });
+};
+
+</script>
+				<!-- Main -->
+					<div class='visuwords'>
+	<div class='legend' inout='out'>
+	  <div class='inner'>
+		<div class="type"><img src="//cdn.visuwords.com/assets/noun.svg" /><label> noun      </label></div>
+		<div class="type"><img src="//cdn.visuwords.com/assets/verb.svg" /><label> verb      </label></div>
+		<div class="type"><img src="//cdn.visuwords.com/assets/adj.svg"  /><label> adjective </label></div>
+		<div class="type"><img src="//cdn.visuwords.com/assets/adv.svg"  /><label> adverb    </label></div>
+
+		<div class="link"><img src="//cdn.visuwords.com/assets/link.word.svg"          /><label> is a word for     </label></div>
+		<div class="link"><img src="//cdn.visuwords.com/assets/link.kind_of.svg"       /><label> is a kind of      </label></div>
+		<div class="link"><img src="//cdn.visuwords.com/assets/link.instance_of.svg"   /><label> is an instance of </label></div>
+		<div class="link"><img src="//cdn.visuwords.com/assets/link.member_of.svg"     /><label> is a member of    </label></div>
+		<div class="link"><img src="//cdn.visuwords.com/assets/link.part_of.svg"       /><label> is a part of      </label></div>
+		<div class="link"><img src="//cdn.visuwords.com/assets/link.substance_of.svg"  /><label> is a substance of </label></div>
+		<div class="link"><img src="//cdn.visuwords.com/assets/link.similar_to.svg"    /><label> is similar to     </label></div>
+		<div class="link"><img src="//cdn.visuwords.com/assets/link.pertains_to.svg"   /><label> pertains to       </label></div>
+		<div class="link"><img src="//cdn.visuwords.com/assets/link.participle.svg"    /><label> participle        </label></div>
+		<div class="link"><img src="//cdn.visuwords.com/assets/link.attribute.svg"     /><label> attribute         </label></div>
+		<div class="link"><img src="//cdn.visuwords.com/assets/link.opposes.svg"       /><label> opposes           </label></div>
+		<div class="link"><img src="//cdn.visuwords.com/assets/link.verb_group.svg"    /><label> verb group        </label></div>
+		<div class="link"><img src="//cdn.visuwords.com/assets/link.entails.svg"       /><label> entails           </label></div>
+		<div class="link"><img src="//cdn.visuwords.com/assets/link.also_see.svg"      /><label> also see          </label></div>
+		<div class="link"><img src="//cdn.visuwords.com/assets/link.causes.svg"        /><label> causes            </label></div>
+		<div class="link"><img src="//cdn.visuwords.com/assets/link.derivation.svg"    /><label> derivation        </label></div>
+		<div class="link"><img src="//cdn.visuwords.com/assets/link.domain_topic.svg"  /><label> topic domain      </label></div>
+		<div class="link"><img src="//cdn.visuwords.com/assets/link.domain_region.svg" /><label> region domain     </label></div>
+		<div class="link">
+	</div>
+	<div class='origin'></div>
+
+								<section>
+									<h4>Form</h4>
+									<form method="post" action="#">
+										<div class="row gtr-uniform">
+											<div class="col-6 col-12-xsmall">
+												<input type="text" name="demo-name" id="demo-name" value="" placeholder="Name" />
+											</div>
+											<div class="col-6 col-12-xsmall">
+												<input type="email" name="demo-email" id="demo-email" value="" placeholder="Email" />
+											</div>
+											<div class="col-12">
+												<select name="demo-category" id="demo-category">
+													<option value="">- Category -</option>
+													<option value="1">Manufacturing</option>
+													<option value="1">Shipping</option>
+													<option value="1">Administration</option>
+													<option value="1">Human Resources</option>
+												</select>
+											</div>
+											<div class="col-4 col-12-small">
+												<input type="radio" id="demo-priority-low" name="demo-priority" checked>
+												<label for="demo-priority-low">Low</label>
+											</div>
+											<div class="col-4 col-12-small">
+												<input type="radio" id="demo-priority-normal" name="demo-priority">
+												<label for="demo-priority-normal">Normal</label>
+											</div>
+											<div class="col-4 col-12-small">
+												<input type="radio" id="demo-priority-high" name="demo-priority">
+												<label for="demo-priority-high">High</label>
+											</div>
+											<div class="col-6 col-12-small">
+												<input type="checkbox" id="demo-copy" name="demo-copy">
+												<label for="demo-copy">Email me a copy</label>
+											</div>
+											<div class="col-6 col-12-small">
+												<input type="checkbox" id="demo-human" name="demo-human" checked>
+												<label for="demo-human">Not a robot</label>
+											</div>
+											<div class="col-12">
+												<textarea name="demo-message" id="demo-message" placeholder="Enter your message" rows="6"></textarea>
+											</div>
+											<div class="col-12">
+												<ul class="actions">
+													<li><input type="submit" value="Send Message" class="primary" /></li>
+													<li><input type="reset" value="Reset" /></li>
+												</ul>
+											</div>
+										</div>
+									</form>
+								</section>
+
+
+				<!-- Footer -->
+					<footer id="footer">
+						<ul class="icons">
+							<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+							<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+							<li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
+							<li><a href="#" class="icon fa-envelope-o"><span class="label">Email</span></a></li>
+						</ul>
+						<!-- Google Analytics -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-XXXXX-Y', 'auto');
+ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+            </div>
+
+	</body>
+</html>

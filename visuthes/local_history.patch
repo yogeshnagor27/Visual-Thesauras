@@ -1,0 +1,16 @@
+Index: visuthes/settings.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- visuthes/settings.py	(date 1554625692395)
++++ visuthes/settings.py	(date 1554625692395)
+@@ -23,7 +23,7 @@
+ SECRET_KEY = '-4cd$mavo-l@$=^x9o1z$(1k*m6@g)+5s8fun8m7llp=j44$8x'
+ 
+ # SECURITY WARNING: don't run with debug turned on in production!
+-DEBUG = True
++DEBUG = False
+ 
+ ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ 
